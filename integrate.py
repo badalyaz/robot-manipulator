@@ -3,17 +3,13 @@
 import torch
 from torchdiffeq import odeint
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-device
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def integrate(net, n, Init_cond, index):
-    
-    t = ( torch.arange(1, (n + 1))/n).to(device).double()
-    
+    t = (torch.arange(1, (n + 1)) / n).double().to(device)
     q0 = Init_cond[index, 0]
+    q = q0 + odeint(net, 0 * q0, t)
 
-    q = q0 + odeint(net, 0*q0, t)
-    
     return q
